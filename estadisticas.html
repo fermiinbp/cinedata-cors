@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineData - Estadísticas</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <h1>🎬 CineData</h1>
+
+    <nav class="menu">
+      <a href="index.html">Películas</a>
+      <a href="estadisticas.html" aria-current="page">Estadísticas</a>
+    </nav>
+  </header>
+
+  <main class="panel">
+    <h2>Estadísticas por género</h2>
+
+    <form id="form-minimo" class="filtros">
+      <label for="minimo">Mínimo de películas por género</label>
+      <input type="number" id="minimo" name="minimo" placeholder="1 - 50" min="1" max="50" step="1">
+      <button type="submit">Filtrar</button>
+    </form>
+
+    <div id="estado" class="estado" role="status"></div>
+
+    <table id="tabla" class="tabla" hidden>
+      <thead>
+        <tr><th>Género</th><th>Total</th><th>Nota media</th></tr>
+      </thead>
+      <tbody id="cuerpo-tabla"></tbody>
+    </table>
+  </main>
+
+  <script type="module" src="js/estadisticas.js"></script>
+</body>
+</html>
