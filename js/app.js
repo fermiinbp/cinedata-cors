@@ -8,7 +8,15 @@ const $ = selector => document.querySelector(selector);
 function mostrarMensaje(texto, esError = false){
     $("#estado").textContent = texto;
     $("#estado").classList.toggle("error", esError);
-} 
+}
+
+// Crea un elemento con texto plano (textContent): evita XSS
+function elemento(etiqueta, texto, clase) {
+    const el = document.createElement(etiqueta);
+    el.textContent = texto;
+    if (clase) el.className = clase;
+    return el;
+}
 
 async function cargarPeliculas() {
     mostrarMensaje("...Cargando");
@@ -27,14 +35,20 @@ async function cargarPeliculas() {
 }
 
 function pintarPeliculas(peliculas) {
-    $("#rejilla").innerHTML = peliculas.map(p => `
-        <article class="tarjeta">
-            <h3>${p.titulo}</h3>
-            <p>${p.anio}</p>
-            <p class="nota">* ${p.nota}</p>
-            <button data-id="${p.id}" data-titulo= "${p.titulo}">Reseñas</button>         
-        </article>
-   ` ).join("");
+    const tarjetas = peliculas.map(p => {
+        const art = elemento("article", "", "tarjeta");
+        const boton = elemento("button", "Reseñas");
+        boton.dataset.id = p.id;
+        boton.dataset.titulo = p.titulo;
+        art.append(
+            elemento("h3", p.titulo),
+            elemento("p", p.anio),
+            elemento("p", `* ${p.nota}`, "nota"),
+            boton
+        );
+        return art;
+    });
+    $("#rejilla").replaceChildren(...tarjetas);
 }
 //PAGINCACION
 function pintarPaginacion({pagina, paginas}){
@@ -89,10 +103,15 @@ function pintarSesion() {
  // RESEÑAS
  async function cargarResenas() {
     const resenas = await resenasDe(estado.peliculaAbierta);
-    $("#lista-resenas").innerHTML = resenas.length 
-    ? resenas.map(r => `<li><b>${r.usuario}</b> ${r.valoracion} * ${r.texto}</li>)`).join("") 
-    : "<li>Todavia no hay reseñas.</li>";
-    $("#panel-resenas").hidden = false;    
+    const items = resenas.length
+        ? resenas.map(r => {
+            const li = document.createElement("li");
+            li.append(elemento("b", r.usuario), ` ${r.valoracion} * ${r.texto}`);
+            return li;
+        })
+        : [elemento("li", "Todavia no hay reseñas.")];
+    $("#lista-resenas").replaceChildren(...items);
+    $("#panel-resenas").hidden = false;
  }
 
  $("#rejilla").addEventListener("click", evento => {
@@ -100,7 +119,7 @@ function pintarSesion() {
     if (!boton) return;
     estado.peliculaAbierta = boton.dataset.id;
     $("#titulo-resenas").textContent = `Reseñas de ${boton.dataset.titulo}`;
-    cargarResenas(); 
+    cargarResenas();
  });
 
  $("#form-resena").addEventListener("submit", async evento => {
@@ -114,12 +133,7 @@ function pintarSesion() {
     }catch (error) {
         mostrarMensaje(error.message, true);
     }
- }); 
-
- 
-
-
-
+ });
 
 pintarSesion();
 cargarPeliculas();

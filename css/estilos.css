@@ -79,6 +79,23 @@ button:disabled { background: #9fb0c0; cursor: default; }
 .tarjeta h3 { font-size: 17px; }
 .nota { font-weight: bold; color: #2E75B6; }
 
+.menu { display: flex; gap: 16px; }
+.menu a { color: white; text-decoration: none; padding: 4px 0; }
+.menu a[aria-current="page"] { font-weight: bold; border-bottom: 2px solid #D5E8F4; }
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tabla th, .tabla td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #d5dde5;
+}
+.tabla th { background: #D5E8F4; }
+
+.estado ul { margin: 6px 0 0 20px; }
+
 .paginacion {
   display: flex;
   justify-content: center;

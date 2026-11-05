@@ -9,9 +9,18 @@ async function pedir(ruta, opciones = {}) {
     const res = await fetch(`${API_URL}${ruta}`, {...opciones, headers: cabecera});
     const datos = res.status === 204 ? null : await res.json();
     if (!res.ok){
-        throw new Error(datos?.error || `Error ${res.status}`);
+        const error = new Error(datos?.error || `Error ${res.status}`);
+        error.detalles = Array.isArray(datos?.detalles) ? datos.detalles : [];
+        throw error;
     }
     return datos;
+}
+
+export function estadisticasPorGenero(minimo) {
+    const query = new URLSearchParams();
+    if (minimo !== undefined && minimo !== "") query.set("minimo", minimo);
+    const texto = query.toString();
+    return pedir(`/peliculas/estadisticas${texto ? `?${texto}` : ""}`);
 }
 
 export function listarPeliculas(parametros) {
