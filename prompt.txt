@@ -1,0 +1,13 @@
+Objetivo: rediseñar el listado de películas de la web como una cuadrícula de tarjetas. Cada tarjeta
+muestra título, año, género y nota. La cuadrícula pasa de 1 columna en móvil a 4 en pantallas grandes,
+y la cabecera con el buscador se queda fija arriba al hacer scroll.
+
+Contexto: es una web estática (HTML, CSS y JavaScript sin frameworks) que pide los datos a la API
+en http://localhost:3000. Mira cómo pinta hoy el listado el JavaScript y qué CSS tiene.
+
+Restricciones: CSS puro, sin frameworks ni librerías y sin instalar nada. No cambies cómo se piden
+los datos a la API. Se tiene que poder usar con teclado: el foco del buscador y de las tarjetas se ve.
+No hagas commit.
+
+Hecho cuando: a 375 px se ve 1 columna y a 1440 px se ven 4; la cabecera no se va al hacer scroll;
+navegando con Tab se ve en todo momento dónde está el foco; no hay ninguna librería nueva.

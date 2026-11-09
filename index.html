@@ -8,23 +8,32 @@
 </head>
 <body>
   <header class="cabecera">
-    <h1>🎬 CineData</h1>
+    <div class="cabecera-fila">
+      <h1>🎬 CineData</h1>
 
-    <nav class="menu">
-      <a href="index.html" aria-current="page">Películas</a>
-      <a href="estadisticas.html">Estadísticas</a>
-    </nav>
+      <nav class="menu">
+        <a href="index.html" aria-current="page">Películas</a>
+        <a href="estadisticas.html">Estadísticas</a>
+      </nav>
 
-    <form id="form-login" class="login">
-      <input type="email" name="email" placeholder="email" value="ana@lab.com" required>
-      <input type="password" name="password" placeholder="contraseña" value="ana123" required>
-      <button type="submit">Entrar</button>
-    </form>
+      <form id="form-login" class="login">
+        <input type="email" name="email" aria-label="Email" placeholder="email" value="ana@lab.com" required>
+        <input type="password" name="password" aria-label="Contraseña" placeholder="contraseña" value="ana123" required>
+        <button type="submit">Entrar</button>
+      </form>
 
-    <div id="sesion" class="sesion" hidden>
-      <span id="saludo"></span>
-      <button id="btn-salir">Salir</button>
+      <div id="sesion" class="sesion" hidden>
+        <span id="saludo"></span>
+        <button id="btn-salir">Salir</button>
+      </div>
     </div>
+
+    <search class="buscador">
+      <label for="buscar-titulo">Buscar por título</label>
+      <input id="buscar-titulo" type="search" maxlength="50" placeholder="Mínimo 2 caracteres" autocomplete="off">
+      <p id="estado-busqueda" class="estado" role="status" hidden></p>
+      <ul id="resultados-busqueda" aria-label="Resultados de la búsqueda"></ul>
+    </search>
   </header>
 
   <main class="panel">
@@ -46,8 +55,8 @@
       <button type="submit">Filtrar</button>
     </form>
 
-    <p id="estado" class="estado"></p>
-    <section id="rejilla" class="rejilla"></section>
+    <p id="estado" class="estado" role="status"></p>
+    <section id="rejilla" class="rejilla" aria-label="Películas"></section>
 
     <nav class="paginacion">
       <button id="btn-anterior">← Anterior</button>

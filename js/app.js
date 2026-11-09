@@ -1,9 +1,16 @@
+import "./buscador.js";
 import { listarPeliculas, resenasDe, escribirResena, login, logout, usuarioActual } from "./api.js";
 
 //  ATAJO
 const estado = {pagina: 1, limite: 4, filtros: {}, peliculaAbierta: null};
 
 const $ = selector => document.querySelector(selector);
+
+// Guarda la altura de la cabecera fija en una variable CSS (--alto-cabecera)
+// para que el elemento con foco nunca quede escondido debajo de ella.
+new ResizeObserver(([entrada]) => {
+    document.documentElement.style.setProperty("--alto-cabecera", `${entrada.target.offsetHeight}px`);
+}).observe($(".cabecera"));
 
 function mostrarMensaje(texto, esError = false){
     $("#estado").textContent = texto;
@@ -34,18 +41,32 @@ async function cargarPeliculas() {
     }
 }
 
+// La API puede mandar "generos" (array) o "genero"; si no viene, se indica.
+function textoGenero(p) {
+    const generos = [].concat(p.generos ?? p.genero ?? []).filter(Boolean);
+    return generos.length ? generos.join(", ") : "Sin género";
+}
+
 function pintarPeliculas(peliculas) {
     const tarjetas = peliculas.map(p => {
         const art = elemento("article", "", "tarjeta");
-        const boton = elemento("button", "Reseñas");
+
+        const nota = elemento("p", "", "nota");
+        nota.append(elemento("span", "Nota: ", "solo-lector"), String(p.nota ?? "—"));
+
+        const datos = elemento("p", "", "tarjeta-datos");
+        datos.append(
+            elemento("span", p.anio, "anio"),
+            elemento("span", textoGenero(p), "genero")
+        );
+
+        const boton = elemento("button", "Reseñas", "tarjeta-boton");
+        boton.type = "button";
         boton.dataset.id = p.id;
         boton.dataset.titulo = p.titulo;
-        art.append(
-            elemento("h3", p.titulo),
-            elemento("p", p.anio),
-            elemento("p", `* ${p.nota}`, "nota"),
-            boton
-        );
+        boton.setAttribute("aria-label", `Reseñas de ${p.titulo}`);
+
+        art.append(elemento("h3", p.titulo), nota, datos, boton);
         return art;
     });
     $("#rejilla").replaceChildren(...tarjetas);

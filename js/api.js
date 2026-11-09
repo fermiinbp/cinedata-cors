@@ -28,6 +28,10 @@ export function listarPeliculas(parametros) {
     return pedir(`/peliculas?${query}`);
 }
 
+export function buscarPorTitulo(q, signal) {
+    return pedir(`/peliculas/buscar?q=${encodeURIComponent(q)}`, { signal });
+}
+
 export function resenasDe(peliculaId) {
     return pedir(`/peliculas/${peliculaId}/resenas`);
 }
